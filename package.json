@@ -14,6 +14,8 @@
   "dependencies": {
     "http-proxy": "^1.1.2",
     "express": "^4.0.0",
-    "passport": "^0.2.0"
+    "passport": "^0.2.0",
+    "passport-google-oauth": "^0.1.5",
+    "passport-openid": "^0.3.1"
   }
 }
