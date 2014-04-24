@@ -9,14 +9,16 @@ var httpProxy = require('http-proxy');
 
 /* Import own JS files */
 var config = require('./config/config');
+var secrets = require('./config/secrets.js');
 
 /* App Setup */
 var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.use('/_static', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded());
 app.use(cookieParser())
-app.use(session({ key: 'orthus', secret: 'keyboard cat' }));
+app.use(session({ key: 'orthus', secret: secrets.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -28,6 +30,7 @@ var proxy = httpProxy.createProxyServer({
 passport.use(new OpenIDStrategy({
     returnURL: config.serverAddress + '/auth/openid/callback',
     profile: true,
+    providerURL: 'https://www.google.com/accounts/o8/id'
     },
     function (identifier, profile, done) {
         return done(null, { identifier: identifier, profile: profile });
@@ -51,9 +54,9 @@ app.get('/auth/openid/callback', passport.authenticate('openid', { failureRedire
     res.redirect('/');
 });
 
-app.use('/login', express.static(__dirname + '/public/login'));
+
 app.get('/login', function (req, res, next) {
-    res.sendfile(__dirname + '/public/login/login.html');
+    res.render('login');
 });
 
 app.get('/logout', function (req, res, next) {
