@@ -12,10 +12,12 @@ TODOS / Features
 - [ ] Check logins vs user accounts
 - [ ] Have user accounts stored in some sort of DB, maybe even FS based
 - [ ] Proper login screen
-- [ ] Request Account screen including a name  
+- [ ] Request Account screen including a name
 - [ ] Account admin screen
+- [ ] LOGO!
+
 #####Longer Term
-- [ ] Sessions stored properly, in same DB as accounts
+- [ ] Sessions stored long term, in same DB as accounts
 - [ ] Add token to forwarded requests with auth info
 - [ ] Support multiple simultaneous "virtual hosts" / URLs
 - [ ] Clustering
