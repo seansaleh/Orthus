@@ -1,17 +1,20 @@
 ﻿var passport = require('passport');
 var OpenIDStrategy = require('passport-openid').Strategy;
 var config = require('../config/config');
+var User = require('../models/User');
+var userController = require('./user');
 
 /** Passport Config **/
 passport.use(new OpenIDStrategy({
     returnURL: config.serverAddress + '/auth/openid/callback',
     profile: true,
     providerURL: 'https://www.google.com/accounts/o8/id'
-},
-    function (identifier, profile, done) {
-        return done(null, { identifier: identifier, profile: profile });
-    }
-));
+}, function (identifier, profile, done) {
+    //Note: After this passport calls into getOpenIDCallback's authenticate callback
+    if (!identifier) return done(null, false);
+    done(null, { identifier: identifier, profile: profile });
+}));
+
 passport.serializeUser(function (user, done) {
     done(null, { identifier: user.identifier, profile: user.profile });
 });
@@ -23,7 +26,7 @@ passport.deserializeUser(function (user, done) {
 exports.isAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) return next();
     req.session.returnTo = req.path;
-    res.redirect('/login');
+    res.redirect(config.loginURL);
 };
 
 /** Routes **/
@@ -32,8 +35,13 @@ exports.postOpenID = function (req, res, next) {
 };
 
 exports.getOpenIDCallback = function (req, res, next) {
-    res.redirect(req.session.returnTo || '/');
-    res.redirect('/');
+    passport.authenticate('openid', function (err, identifierAndProfile, info) {
+        //Note: based on current passport.use err will never be called
+        if (err) return next(err);
+        if (!identifierAndProfile) return res.redirect('/login');
+
+        userController.loginOrSignupOpenID(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
+    })(req, res, next);
 };
 
 exports.getLogin = function (req, res, next) {
@@ -42,9 +50,9 @@ exports.getLogin = function (req, res, next) {
 
 exports.getLogout = function (req, res, next) {
     req.logout();
-    res.redirect('/login');
+    res.redirect(config.loginURL);
 };
 
 exports.getSignup = function (req, res, next) {
-    res.redirect('/login');
+    res.redirect(config.loginURL);
 };

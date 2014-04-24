@@ -25,12 +25,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /** Routes **/
-app.post('/auth/openid', passport.authenticate('openid'), authController.postOpenID);
-app.get('/auth/openid/callback', passport.authenticate('openid', { failureRedirect: '/login' }), authController.getOpenIDCallback);
+app.post('/auth/openid', passport.authenticate('openid'));
+app.get('/auth/openid/callback', authController.getOpenIDCallback);
 
-app.get('/login', authController.getLogin);
-app.get('/logout', authController.getLogout);
-app.get('/signup', authController.getSignup);
+app.get(config.loginURL, authController.getLogin);
+app.get(config.logoutURL, authController.getLogout);
+app.get(config.signupURL, authController.getSignup);
 
 //Anything after this needs to be authenticated
 app.use(authController.isAuthenticated);
