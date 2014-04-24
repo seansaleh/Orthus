@@ -33,7 +33,10 @@
     <Compile Include="app.js" />
     <Compile Include="config\config.js" />
     <Compile Include="config\secrets.js" />
+    <Compile Include="controllers\auth.js" />
+    <Compile Include="controllers\proxy.js" />
     <Compile Include="controllers\user.js" />
+    <Compile Include="models\filesystemDB.js" />
     <Compile Include="models\User.js" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
