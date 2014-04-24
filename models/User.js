@@ -1,5 +1,8 @@
-﻿var User = function (identifier) {
+﻿var usersDB = {};
+
+var User = function (identifier, profile) {
     this.identifier = identifier;
+    this.profile = profile;
 };
 
 User.prototype.print = function () {
@@ -7,8 +10,12 @@ User.prototype.print = function () {
 };
 
 User.findByIdentifier = function (identifier, callback) {
-    var user = new User(identifier);
-    user.isAuthorized = true;
-    return callback(null, user);
-}
+    return callback(null, usersDB[identifier]);
+};
+
+User.create = function (identifier, profile) {
+    if (!identifier || !profile) return;
+    usersDB[identifier] = new User(identifier, profile);
+    usersDB[identifier].isAuthorized = true;
+};
 module.exports = User;

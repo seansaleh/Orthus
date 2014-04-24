@@ -11,6 +11,7 @@ var config = require('./config/config');
 var secrets = require('./config/secrets');
 var User = require('./models/User');
 var authController = require('./controllers/auth');
+var userController = require('./controllers/user.js');
 var proxyController = require('./controllers/proxy');
 
 /** App Setup **/
@@ -28,9 +29,10 @@ app.use(passport.session());
 app.post('/auth/openid', passport.authenticate('openid'));
 app.get('/auth/openid/callback', authController.getOpenIDCallback);
 
-app.get(config.loginURL, authController.getLogin);
-app.get(config.logoutURL, authController.getLogout);
-app.get(config.signupURL, authController.getSignup);
+app.get(config.loginURL, userController.getLogin);
+app.get(config.logoutURL, userController.getLogout);
+app.get(config.signupURL, userController.getSignup);
+app.post(config.signupURL, userController.postSignup);
 
 //Anything after this needs to be authenticated
 app.use(authController.isAuthenticated);

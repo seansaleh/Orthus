@@ -42,6 +42,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="views\login.jade" />
+    <Content Include="views\signup.jade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="config\" />

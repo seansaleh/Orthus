@@ -9,7 +9,7 @@ TODOS / Features
 - [x] Reverse proxy all requests to another server
 - [x] Login with Google OpenID
 - [x] Refactor into proper controllers and models
-- [-] Check logins vs user accounts
+- [x] Check logins vs user accounts
 - [ ] Have user accounts stored in some sort of DB, maybe even FS based
 - [ ] Proper login screen
 - [ ] Request Account screen including a name

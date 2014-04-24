@@ -25,7 +25,9 @@ passport.deserializeUser(function (user, done) {
 
 exports.isAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) return next();
-    req.session.returnTo = req.path;
+    if (req.url != "/favicon.ico") {
+        req.session.returnTo = req.path;
+    }
     res.redirect(config.loginURL);
 };
 
@@ -42,17 +44,4 @@ exports.getOpenIDCallback = function (req, res, next) {
 
         userController.loginOrSignupOpenID(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
     })(req, res, next);
-};
-
-exports.getLogin = function (req, res, next) {
-    res.render('login');
-};
-
-exports.getLogout = function (req, res, next) {
-    req.logout();
-    res.redirect(config.loginURL);
-};
-
-exports.getSignup = function (req, res, next) {
-    res.redirect(config.loginURL);
 };
