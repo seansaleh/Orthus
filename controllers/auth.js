@@ -6,7 +6,7 @@ var userController = require('./user');
 
 /** Passport Config **/
 passport.use(new OpenIDStrategy({
-    returnURL: config.serverAddress + '/auth/openid/callback',
+    returnURL: config.openIDReturnURL,
     profile: true,
     providerURL: 'https://www.google.com/accounts/o8/id'
 }, function (identifier, profile, done) {
@@ -28,7 +28,7 @@ exports.isAuthenticated = function (req, res, next) {
     if (req.url != "/favicon.ico") {
         req.session.returnTo = req.path;
     }
-    res.redirect(config.loginURL);
+    res.redirect(config.baseURL + 'login');
 };
 
 /** Routes **/
@@ -40,7 +40,7 @@ exports.getOpenIDCallback = function (req, res, next) {
     passport.authenticate('openid', function (err, identifierAndProfile, info) {
         //Note: based on current passport.use err will never be called
         if (err) return next(err);
-        if (!identifierAndProfile) return res.redirect('/login');
+        if (!identifierAndProfile) return res.redirect(config.baseURL + 'login');
 
         userController.loginOrSignupOpenID(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
     })(req, res, next);

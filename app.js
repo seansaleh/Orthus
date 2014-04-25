@@ -19,7 +19,7 @@ var proxyController = require('./controllers/proxy');
 var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use('/_static', express.static(__dirname + '/public'));
+app.use(config.baseURL + 'static', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded());
 app.use(cookieParser())
 app.use(session({ key: 'orthus', secret: secrets.sessionSecret }));
@@ -28,13 +28,14 @@ app.use(passport.session());
 app.use(flash());
 
 /** Routes **/
-app.post('/auth/openid', passport.authenticate('openid'));
-app.get('/auth/openid/callback', authController.getOpenIDCallback);
+app.post(config.baseURL + 'auth/openid', passport.authenticate('openid'));
+app.get(config.baseURL + 'auth/openid/callback', authController.getOpenIDCallback);
 
-app.get(config.loginURL, userController.getLogin);
-app.get(config.logoutURL, userController.getLogout);
-app.get(config.signupURL, userController.getSignup);
-app.post(config.signupURL, userController.postSignup);
+app.get(config.baseURL + 'login', userController.getLogin);
+app.get(config.baseURL + 'login', userController.getLogout);
+app.get(config.baseURL + 'signup', userController.getSignup);
+app.post(config.baseURL + 'signup', userController.postSignup);
+app.get(config.baseURL + 'admin', userController.getAdmin);
 
 //Anything after this needs to be authenticated
 app.use(authController.isAuthenticated);

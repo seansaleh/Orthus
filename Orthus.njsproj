@@ -47,6 +47,7 @@
     <Content Include="public\css\styles.css" />
     <Content Include="public\js\jquery-2.1.0.min.map" />
     <Content Include="README.md" />
+    <Content Include="views\admin.jade" />
     <Content Include="views\flash.jade" />
     <Content Include="views\footer.jade" />
     <Content Include="views\header.jade" />

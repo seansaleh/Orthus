@@ -10,7 +10,7 @@ exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
             //Signup user to request access
             req.session.signUpIdentifier = identifier;
             req.session.signUpProfile = profile;
-            return res.redirect(config.signupURL);
+            return res.redirect(config.baseURL + 'signup');
         } else { //The user is authorized, so log them in
             req.login(user, function (err) {
                 if (err) return next(err);
@@ -32,7 +32,7 @@ exports.getLogin = function (req, res, next) {
 
 exports.getLogout = function (req, res, next) {
     req.logout();
-    res.redirect(config.loginURL);
+    res.redirect(config.baseURL + 'login');
 };
 
 exports.getSignup = function (req, res, next) {
@@ -43,5 +43,9 @@ exports.getSignup = function (req, res, next) {
 exports.postSignup = function (req, res, next) {
     signup(req.session.signUpIdentifier, req.session.signUpProfile, req.body.name, req.body.justification);
     req.flash('success', { msg: 'User Account requested. Will require admin approval' });
-    res.redirect(config.loginURL);
+    res.redirect(config.baseURL + 'login');
+};
+
+exports.getAdmin = function (req, res, next) {
+    res.render('admin');
 };
