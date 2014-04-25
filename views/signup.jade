@@ -1,8 +1,20 @@
-﻿doctype html
-html
-  head
-    title Login
-  body
-    form(action='/signup', method='post')
-      div
-        input(type='submit', value='Request Account')
+﻿extends layout
+
+block content
+  div.well.well-centered
+    form.form-centered(role=form action='/signup', method='post')
+      h2.form-signin-heading Register
+      .input-group.input-top
+        span.input-group-addon.input-top Email
+        if profile.emails[0]
+          input.form-control.input-top(type='text', value='#{profile.emails[0].value}', readonly)
+        else
+          input.form-control.input-top(type='text', name="No email on google", readonly)
+      .input-group.input-center
+        span.input-group-addon.input-center Name
+        if profile.displayName
+          input.form-control.input-center(type='text', name="name", value= '#{profile.displayName}', placeholder="Your name", required)
+        else
+          input.form-control.input-center(type='text', name="name", placeholder="Your name", required)
+      input.form-control.input-bottom(type='text', name="justification", placeholder="Why should you get an account?", required, autofocus)
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') Request Account

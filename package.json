@@ -20,6 +20,7 @@
     "jade": "^1.3.1",
     "express-session": "^1.0.3",
     "cookie-parser": "^1.0.1",
-    "node-persist": "seansaleh/node-persist"
+    "node-persist": "seansaleh/node-persist",
+    "express-flash": "0.0.2"
   }
 }

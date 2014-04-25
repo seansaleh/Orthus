@@ -1,9 +1,9 @@
 ﻿extends layout
 
 block content
-  div.well.signin
-    form.form-signin(role=form action='/auth/openid', method='post')
-      h2.form-signin-heading Please login
+  div.well.well-centered
+    form.form-centered(role=form action='/auth/openid', method='post')
+      h2.form-centered-heading Please login
       button.btn.btn-lg.btn-primary.btn-block(type='submit') Login in with google
       br
       div.text-muted Don't have an account? 

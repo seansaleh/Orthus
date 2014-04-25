@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var flash = require('express-flash');
 var passport = require('passport');
 var httpProxy = require('http-proxy');
 
@@ -24,6 +25,7 @@ app.use(cookieParser())
 app.use(session({ key: 'orthus', secret: secrets.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 /** Routes **/
 app.post('/auth/openid', passport.authenticate('openid'));

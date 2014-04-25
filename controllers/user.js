@@ -20,9 +20,9 @@ exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
     });
 };
 
-function signup(identifier, profile) {
+function signup(identifier, profile, name, justification) {
     if (!identifier || !profile) return;
-    User.create(identifier, profile); 
+    User.create(identifier, profile, name, justification); 
 }
 
 /** Routes **/
@@ -36,10 +36,12 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
-    res.render('signup');
+    //debugger;
+    res.render('signup', {profile: req.session.signUpProfile});
 };
 
 exports.postSignup = function (req, res, next) {
-    signup(req.session.signUpIdentifier, req.session.signUpProfile);
+    signup(req.session.signUpIdentifier, req.session.signUpProfile, req.body.name, req.body.justification);
+    req.flash('success', { msg: 'User Account requested. Will require admin approval' });
     res.redirect(config.loginURL);
 };
