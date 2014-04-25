@@ -1,8 +1,11 @@
-﻿doctype html
-html
-  head
-    title Login
-  body
-    form(action='/auth/openid', method='post')
-      div
-        input(type='submit', value='Sign In Or Create Account with Google')
+﻿extends layout
+
+block content
+  div.well.signin
+    form.form-signin(role=form action='/auth/openid', method='post')
+      h2.form-signin-heading Please login
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') Login in with google
+      br
+      div.text-muted Don't have an account? 
+        br 
+        | You can request one after logging in

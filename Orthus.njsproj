@@ -37,9 +37,19 @@
     <Compile Include="controllers\proxy.js" />
     <Compile Include="controllers\user.js" />
     <Compile Include="models\User.js" />
+    <Compile Include="public\js\bootstrap.js" />
+    <Compile Include="public\js\bootstrap.min.js" />
+    <Compile Include="public\js\jquery-2.1.0.js" />
+    <Compile Include="public\js\jquery-2.1.0.min.js" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
+    <Content Include="public\css\bootstrap.min.css" />
+    <Content Include="public\css\styles.css" />
+    <Content Include="public\js\jquery-2.1.0.min.map" />
     <Content Include="README.md" />
+    <Content Include="views\footer.jade" />
+    <Content Include="views\header.jade" />
+    <Content Include="views\layout.jade" />
     <Content Include="views\login.jade" />
     <Content Include="views\signup.jade" />
   </ItemGroup>
@@ -48,6 +58,8 @@
     <Folder Include="controllers\" />
     <Folder Include="models\" />
     <Folder Include="public\" />
+    <Folder Include="public\css\" />
+    <Folder Include="public\js\" />
     <Folder Include="views\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
