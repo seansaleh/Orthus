@@ -1,5 +1,6 @@
 ﻿var storage = require('node-persist');
-storage.initSync({encodeFilename: true});
+var path = require('path');
+storage.initSync({encodeFilename: true, dir: path.join(path.dirname(require.main.filename), "persist")});
 
 var User = function (identifier, profile) {
     this.identifier = identifier;
