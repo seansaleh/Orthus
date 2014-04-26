@@ -36,16 +36,40 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
-    //debugger;
     res.render('signup', {profile: req.session.signUpProfile});
 };
 
 exports.postSignup = function (req, res, next) {
+    if(!req.session.signUpIdentifier || !req.session.signUpProfile || !req.body.name || !req.body.justification) {
+        req.flash('errors', { msg: "Failed to sign up. Maybe you are missing data from the form?"});
+        return res.redirect(config.baseURL + 'login');
+    }
+
     signup(req.session.signUpIdentifier, req.session.signUpProfile, req.body.name, req.body.justification);
     req.flash('success', { msg: 'User Account requested. Will require admin approval' });
     res.redirect(config.baseURL + 'login');
 };
 
 exports.getAdmin = function (req, res, next) {
-    res.render('admin');
+    User.all(function (accounts) {
+        res.render('admin', { user: req.user, accounts: accounts });
+    });
+};
+
+exports.postToggleAuthorize = function (req, res, next) {
+    User.toggleAuthorize(req.body.identifier);
+    req.flash('success', { msg: 'User authorization has been toggled.' });
+    res.redirect(config.baseURL + 'admin');
+};
+
+exports.postToggleAdmin = function (req, res, next) {
+    User.toggleAdmin(req.body.identifier);
+    req.flash('success', { msg: 'User admin status has been toggled.' });
+    res.redirect(config.baseURL + 'admin');
+};
+
+exports.isAdmin = function (req, res, next) {
+    if (req.user.isAdmin) return next();
+    req.flash('errors', { msg: 'Not Admin, try logging in as an admin instead' });
+    return res.redirect(config.baseURL + 'logout');
 };

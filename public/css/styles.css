@@ -6,7 +6,6 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 30px;
-  //background-color: #eee;
 }
 #footer {
   position: absolute;
@@ -71,6 +70,41 @@ body > .container {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.accounts-table td {
+    padding: 2px;
+}
+
+.accounts-table .auth {
+    min-width: 100px;
+
+}
+.accounts-table .admin {
+    min-width: 75px;
+
+}
+.accounts-table .name {
+    min-width: 120px;
+
+}
+.accounts-table .email {
+    min-width: 250px;
+
+}
+.accounts-table .displayName {
+    min-width: 120px;
+
+}
+.accounts-table .justification {
+    min-width: 200px;
+
+}
+.accounts-table .identifier {
+    max-width: 50px;
+
+    overflow: overlay;
+    white-space: nowrap;
 }
 
 

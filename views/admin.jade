@@ -1,1 +1,33 @@
-﻿
+﻿extends layout
+
+block content
+  h1.page-header Accounts
+  div.table-responsive
+    table.table.table-striped.accounts-table
+      thead
+        tr
+          th Authorized?
+          th Admin?
+          th Name
+          th Email
+          th Justification
+          th Display Name
+      tbody
+        for account in accounts
+          tr
+            td.auth= account.isAuthorized
+              form(method="post", action="./admin/toggleAuthorize")
+                input(type='hidden', name='identifier', value='#{account.identifier}')
+                input.btn.btn-default(type="submit", value="toggle")
+            td.admin= account.isAdmin
+              form(method="post", action="./admin/toggleAdmin")
+                input(type='hidden', name='identifier', value='#{account.identifier}')
+                input.btn.btn-default(type="submit", value="toggle")
+            td.name= account.name
+            if account.profile.emails[0]
+              td.email= account.profile.emails[0].value
+            else
+              td.email No Email :(
+            td.justification= account.justification
+            td.displayName= account.profile.displayName
+

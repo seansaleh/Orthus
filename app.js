@@ -32,13 +32,16 @@ app.post(config.baseURL + 'auth/openid', passport.authenticate('openid'));
 app.get(config.baseURL + 'auth/openid/callback', authController.getOpenIDCallback);
 
 app.get(config.baseURL + 'login', userController.getLogin);
-app.get(config.baseURL + 'login', userController.getLogout);
+app.get(config.baseURL + 'logout', userController.getLogout);
 app.get(config.baseURL + 'signup', userController.getSignup);
 app.post(config.baseURL + 'signup', userController.postSignup);
-app.get(config.baseURL + 'admin', userController.getAdmin);
 
 //Anything after this needs to be authenticated
 app.use(authController.isAuthenticated);
+app.get(config.baseURL + 'admin', userController.isAdmin, userController.getAdmin);
+app.post(config.baseURL + 'admin/toggleAuthorize', userController.isAdmin, userController.postToggleAuthorize);
+app.post(config.baseURL + 'admin/toggleAdmin', userController.isAdmin, userController.postToggleAdmin);
+
 app.use(proxyController.proxy);
 app.on('upgrade', proxyController.proxyWebSocket);
 

@@ -16,11 +16,11 @@ passport.use(new OpenIDStrategy({
 }));
 
 passport.serializeUser(function (user, done) {
-    done(null, { identifier: user.identifier, profile: user.profile });
+    done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-    done(null, { identifier: user.identifier, profile: user.profile });
+    done(null, user);
 });
 
 exports.isAuthenticated = function (req, res, next) {

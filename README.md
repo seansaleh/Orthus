@@ -13,7 +13,7 @@ TODOS / Features
 - [x] Have user accounts stored in some sort of DB, maybe even FS based
 - [x] Proper login screen
 - [x] Request Account screen including a name
-- [ ] Account admin screen
+- [-] Account admin screen (screen needs some styling work, ajax)
 - [ ] LOGO!
 
 #####Longer Term
