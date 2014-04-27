@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('express-flash');
+var logger = require('morgan');
+var errorHandler = require('errorhandler');
 var passport = require('passport');
 var httpProxy = require('http-proxy');
 
@@ -17,6 +19,7 @@ var proxyController = require('./controllers/proxy');
 
 /** App Setup **/
 var app = express();
+app.use(logger('dev'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(config.baseURL + 'static', express.static(__dirname + '/public'));
@@ -26,6 +29,8 @@ app.use(session({ key: 'orthus', secret: secrets.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+var server = http.createServer(app.handle.bind(app))
 
 /** Routes **/
 app.post(config.baseURL + 'auth/openid', passport.authenticate('openid'));
@@ -42,9 +47,13 @@ app.get(config.baseURL + 'admin', userController.isAdmin, userController.getAdmi
 app.post(config.baseURL + 'admin/toggleAuthorize', userController.isAdmin, userController.postToggleAuthorize);
 app.post(config.baseURL + 'admin/toggleAdmin', userController.isAdmin, userController.postToggleAdmin);
 
+server.on('upgrade', proxyController.proxyWebSocket);
 app.use(proxyController.proxy);
-app.on('upgrade', proxyController.proxyWebSocket);
+
+app.use(errorHandler());
 
 /** Finally start server **/
-app.listen(config.port);
+server.listen(config.port);
 console.log("Orthus listening on port: " + config.port);
+console.log("Orthus's openID Callback route is: " + config.openIDReturnURL);
+console.log("Orthus is proxying: " + config.proxiedResource);
