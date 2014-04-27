@@ -24,5 +24,6 @@ TODOS / Features
 - [ ] Support multiple simultaneous "virtual hosts" / URLs
 - [ ] Autodetect openID callback by creating new providers dynamically
 - [ ] Clustering
+- [ ] Devise auth bypass system (basic auth? URL param?)
 - [ ] Benchmarks
 
