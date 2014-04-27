@@ -36,6 +36,7 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
+    //TODO: Bug here when session doesn't have profile
     res.render('signup', {profile: req.session.signUpProfile});
 };
 
