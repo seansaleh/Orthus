@@ -48,6 +48,7 @@ app.post(config.baseURL + 'admin/toggleAuthorize', userController.isAdmin, userC
 app.post(config.baseURL + 'admin/toggleAdmin', userController.isAdmin, userController.postToggleAdmin);
 
 server.on('upgrade', proxyController.proxyWebSocket);
+app.use(authController.addAuthHeader);
 app.use(proxyController.proxy);
 
 app.use(errorHandler());

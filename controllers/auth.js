@@ -23,12 +23,35 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
+/** Middleware **/
+
 exports.isAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) return next();
     if (req.url != "/favicon.ico") {
         req.session.returnTo = req.path;
     }
     res.redirect(config.baseURL + 'login');
+};
+
+exports.addAuthHeader = function (req, res, next) {
+    if (config.addAuthHeader) {
+        if (!req.user.name || !req.user.identifier) return next(new Error("Orthus's User missing name or identifier"));
+        if (!req.user.hash) {
+            User.getUniqueHash(req.user.identifier, function (hash) {
+                addHeader(req, hash);
+                return next();
+            });
+        } else {
+            addHeader(req, req.user.hash);
+            return next();
+        }
+    } else {
+        return next();
+    }
+
+    function addHeader(req, hash) {
+        req.headers["Authorization"] = 'Orthus uniqueUser="' + hash + '"';
+    }
 };
 
 /** Routes **/

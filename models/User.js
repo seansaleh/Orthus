@@ -1,5 +1,7 @@
-﻿var storage = require('node-persist');
-var path = require('path');
+﻿var path = require('path');
+var crypto = require('crypto');
+var storage = require('node-persist');
+
 storage.initSync({encodeFilename: true, dir: path.join(path.dirname(require.main.filename), "persist")});
 
 var User = function (identifier, profile, name) {
@@ -8,6 +10,15 @@ var User = function (identifier, profile, name) {
     this.name = name || profile.displayName;
     this.isAdmin = false;
     this.isAuthorized = false;
+};
+
+User.getUniqueHash = function (identifier, callback) {
+    var user = storage.getItem(identifier);
+    if (!user.hash) {
+        user.hash = crypto.createHash('md5').update(identifier).digest('base64');
+        storage.setItem(identifier, user);
+    }
+    callback(user.hash);
 };
 
 User.findByIdentifier = function (identifier, callback) {
