@@ -29,11 +29,13 @@ User.all = function (callback) {
     storage.values(callback);
 };
 
-User.toggleAuthorize = function (identifier, callback) {
+User.toggleAuthorize = function (identifier) {
     var account = storage.getItem(identifier);
     if (account) {
         account.isAuthorized = !account.isAuthorized;
         storage.setItem(identifier, account);
+    } else {
+        console.error("Tried to toggle auth for non existent user");
     }
 };
 
@@ -42,6 +44,8 @@ User.toggleAdmin = function (identifier, callback) {
     if (account) {
         account.isAdmin = !account.isAdmin;
         storage.setItem(identifier, account);
+    } else {
+        console.error("Tried to toggle admin for non existent user");
     }
 };
 

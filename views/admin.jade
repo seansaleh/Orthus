@@ -15,14 +15,10 @@ block content
       tbody
         for account in accounts
           tr
-            td.auth= account.isAuthorized
-              form(method="post", action="./admin/toggleAuthorize")
-                input(type='hidden', name='identifier', value='#{account.identifier}')
-                input.btn.btn-default(type="submit", value="toggle")
-            td.admin= account.isAdmin
-              form(method="post", action="./admin/toggleAdmin")
-                input(type='hidden', name='identifier', value='#{account.identifier}')
-                input.btn.btn-default(type="submit", value="toggle")
+            td.auth
+              input.checkbox(type="checkbox", checked=(account.isAuthorized==true ? true : undefined), value='#{account.identifier}', action="./admin/toggleAuthorize")
+            td.admin
+              input.checkbox(type="checkbox", checked=(account.isAdmin==true ? true : undefined), value='#{account.identifier}', action="./admin/toggleAdmin")
             td.name= account.name
             if account.profile.emails[0]
               td.email= account.profile.emails[0].value
@@ -30,4 +26,3 @@ block content
               td.email No Email :(
             td.justification= account.justification
             td.displayName= account.profile.displayName
-

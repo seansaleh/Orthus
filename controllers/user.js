@@ -63,14 +63,12 @@ exports.getAdmin = function (req, res, next) {
 
 exports.postToggleAuthorize = function (req, res, next) {
     User.toggleAuthorize(req.body.identifier);
-    req.flash('success', { msg: 'User authorization has been toggled.' });
-    res.redirect(config.baseURL + 'admin');
+    res.end();
 };
 
 exports.postToggleAdmin = function (req, res, next) {
     User.toggleAdmin(req.body.identifier);
-    req.flash('success', { msg: 'User admin status has been toggled.' });
-    res.redirect(config.baseURL + 'admin');
+    res.end();
 };
 
 exports.isAdmin = function (req, res, next) {

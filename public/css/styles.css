@@ -1,4 +1,4 @@
-﻿@import url('bootstrap.min.css');
+@import url('bootstrap.min.css');
 html {
   position: relative;
   min-height: 100%;
@@ -24,7 +24,7 @@ body > .container {
 }
 
 .well-centered {
-    max-width: 360px;
+    max-width: 330px;
     min-width: 300px;
     background-color:#eee;
     margin: auto;
@@ -32,9 +32,12 @@ body > .container {
     margin-bottom: 20px;
 }
 .form-centered {
-
   padding: 15px;
   margin: 0 auto;
+}
+.form-centered-heading {
+    margin-bottom: 20px;
+    margin-top: 15px;
 }
 .form-centered .form-control {
   position: relative;
