@@ -41,6 +41,8 @@
     <Compile Include="public\js\bootstrap.min.js" />
     <Compile Include="public\js\jquery-2.1.0.js" />
     <Compile Include="public\js\jquery-2.1.0.min.js" />
+    <Compile Include="test\server-with-headers.js" />
+    <Compile Include="test\stream-latency.js" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
     <Content Include="public\css\bootstrap.min.css" />
@@ -62,6 +64,7 @@
     <Folder Include="public\" />
     <Folder Include="public\css\" />
     <Folder Include="public\js\" />
+    <Folder Include="test\" />
     <Folder Include="views\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
