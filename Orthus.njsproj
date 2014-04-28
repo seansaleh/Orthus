@@ -37,6 +37,7 @@
     <Compile Include="controllers\proxy.js" />
     <Compile Include="controllers\user.js" />
     <Compile Include="models\User.js" />
+    <Compile Include="public\js\app.js" />
     <Compile Include="public\js\bootstrap.js" />
     <Compile Include="public\js\bootstrap.min.js" />
     <Compile Include="public\js\jquery-2.1.0.js" />
