@@ -36,7 +36,11 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
-    //TODO: Bug here when session doesn't have profile
+    if (req.user) return next(new Error("Already requested account, cannot signup again"));
+    if (!req.session.signUpProfile) {
+        req.flash('errors', { msg: "Failed to sign up. Try linking with google again" });
+        return res.redirect(config.baseURL + 'login');
+    }
     res.render('signup', {profile: req.session.signUpProfile});
 };
 

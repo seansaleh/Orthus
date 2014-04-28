@@ -45,9 +45,14 @@ User.toggleAdmin = function (identifier, callback) {
     }
 };
 
+//TODO: Here make sure we don't overwrite user
 User.create = function (identifier, profile, name, justification) {
     if (!identifier || !profile) return;
-    var user = new User(identifier, profile, name);
+
+    var user = storage.getItem(identifier);
+    if (!user) {
+        user = new User(identifier, profile, name);
+    }
     user.justification = justification;
     storage.setItem(identifier, user);
 };
