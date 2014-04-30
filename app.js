@@ -43,9 +43,9 @@ app.post(config.baseURL + 'signup', userController.postSignup);
 
 //Anything after this needs to be authenticated
 app.use(authController.isAuthenticated);
-app.get(config.baseURL + 'admin', userController.isAdmin, userController.getAdmin);
-app.post(config.baseURL + 'admin/toggleAuthorize', userController.isAdmin, userController.postToggleAuthorize);
-app.post(config.baseURL + 'admin/toggleAdmin', userController.isAdmin, userController.postToggleAdmin);
+app.get(config.baseURL + 'admin', userController.admin, userController.getAdmin);
+app.post(config.baseURL + 'admin/toggleAuthorize', userController.admin, userController.postToggleAuthorize);
+app.post(config.baseURL + 'admin/toggleAdmin', userController.admin, userController.postToggleAdmin);
 
 server.on('upgrade', proxyController.proxyWebSocket);
 app.use(authController.addAuthHeader);

@@ -1,6 +1,6 @@
 ﻿var User = require('../models/User');
 var config = require('../config/config');
-
+var csrf = require('csurf');
 
 //TODO: Where should this logic live? All in auth controller? Or here?
 exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
@@ -71,8 +71,13 @@ exports.postToggleAdmin = function (req, res, next) {
     res.end();
 };
 
-exports.isAdmin = function (req, res, next) {
-    if (req.user.isAdmin) return next();
-    req.flash('errors', { msg: 'Not Admin, try logging in as an admin instead' });
-    return res.redirect(config.baseURL + 'logout');
+exports.admin = function (req, res, next) {
+    if (!req.user.isAdmin) {
+        req.flash('errors', { msg: 'Not Admin, try logging in as an admin instead' });
+        return res.redirect(config.baseURL + 'logout');
+    }
+    csrf()(req, res, function (err) {
+        res.locals._csrf = req.csrfToken();
+        next(err);
+    });
 };
