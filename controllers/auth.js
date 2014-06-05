@@ -1,5 +1,6 @@
 ﻿var passport = require('passport');
 var OpenIDStrategy = require('passport-openid').Strategy;
+var PersonaStrategy = require('passport-persona').Strategy;
 var config = require('../config/config');
 var User = require('../models/User');
 var userController = require('./user');
@@ -13,6 +14,17 @@ passport.use(new OpenIDStrategy({
     //Note: After this passport calls into getOpenIDCallback's authenticate callback
     if (!identifier) return done(null, false);
     done(null, { identifier: identifier, profile: profile });
+}));
+
+passport.use(new PersonaStrategy({
+    audience: 'http://localhost:1337'
+},
+function(email, done) {
+    if (!email) return done(null, false);
+    var emails = [
+      {value: email}
+    ];
+    done(null, {identifier: "persona:" + email, profile: {emails: emails}});
 }));
 
 passport.serializeUser(function (user, done) {

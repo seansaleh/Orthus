@@ -20,6 +20,23 @@ exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
     });
 };
 
+exports.loginOrSignupPersona = function (email, req, res, next) {
+    User.findByIdentifier(identifier, function (err, user) {
+        if (err) return next(err);
+        if (!user || !user.isAuthorized) {
+            //Signup user to request access
+            req.session.signUpIdentifier = identifier;
+            req.session.signUpProfile = {};
+            return res.redirect(config.baseURL + 'signup');
+        } else { //The user is authorized, so log them in
+            req.login(user, function (err) {
+                if (err) return next(err);
+                res.redirect(req.session.returnTo || '/');
+            });  
+        }
+    });
+};
+
 function signup(identifier, profile, name, justification) {
     if (!identifier || !profile) return;
     User.create(identifier, profile, name, justification); 
@@ -36,7 +53,7 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
-    if (req.user) return next(new Error("Already requested account, cannot signup again"));
+//        if (req.user) return next(new Error("Already requested account, cannot signup again"));
     if (!req.session.signUpProfile) {
         req.flash('errors', { msg: "Failed to sign up. Try linking with google again" });
         return res.redirect(config.baseURL + 'login');
