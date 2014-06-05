@@ -17,7 +17,7 @@ passport.use(new OpenIDStrategy({
 }));
 
 passport.use(new PersonaStrategy({
-    audience: 'http://localhost:1337'
+    audience: config.personaAudience
 },
 function(email, done) {
     if (!email) return done(null, false);
