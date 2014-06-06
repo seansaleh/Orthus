@@ -80,3 +80,7 @@ exports.getOpenIDCallback = function (req, res, next) {
         userController.loginOrSignupOpenID(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
     })(req, res, next);
 };
+
+exports.postPersonaAuthenticate = function (req, res, next) {
+  userController.loginOrSignupOpenID(req.user.identifier, req.user.profile, req, res, next);
+};

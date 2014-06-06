@@ -20,23 +20,6 @@ exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
     });
 };
 
-exports.loginOrSignupPersona = function (email, req, res, next) {
-    User.findByIdentifier(identifier, function (err, user) {
-        if (err) return next(err);
-        if (!user || !user.isAuthorized) {
-            //Signup user to request access
-            req.session.signUpIdentifier = identifier;
-            req.session.signUpProfile = {};
-            return res.redirect(config.baseURL + 'signup');
-        } else { //The user is authorized, so log them in
-            req.login(user, function (err) {
-                if (err) return next(err);
-                res.redirect(req.session.returnTo || '/');
-            });  
-        }
-    });
-};
-
 function signup(identifier, profile, name, justification) {
     if (!identifier || !profile) return;
     User.create(identifier, profile, name, justification); 

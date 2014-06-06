@@ -38,10 +38,7 @@ app.get(config.baseURL + 'auth/openid/callback', authController.getOpenIDCallbac
 
 app.post(config.baseURL + 'auth/browserid', passport.authenticate('persona', {
   failureRedirect: config.baseURL + 'login'
-}), function (req, res, next) {
-  if (!res) return res.redirect(config.baseURL + 'login');
-  userController.loginOrSignupOpenID(req.user.identifier, req.user.profile, req, res, next);
-});
+}), authController.postPersonaAuthenticate);
 
 app.get(config.baseURL + 'login', userController.getLogin);
 app.get(config.baseURL + 'logout', userController.getLogout);
