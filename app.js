@@ -46,7 +46,7 @@ app.get(config.baseURL + 'signup', userController.getSignup);
 app.post(config.baseURL + 'signup', userController.postSignup);
 
 //Anything after this needs to be authenticated
-app.use(authController.isAuthenticated);
+app.use(authController.isAuthorized);
 app.get(config.baseURL + 'admin', userController.admin, userController.getAdmin);
 app.post(config.baseURL + 'admin/toggleAuthorize', userController.admin, userController.postToggleAuthorize);
 app.post(config.baseURL + 'admin/toggleAdmin', userController.admin, userController.postToggleAdmin);

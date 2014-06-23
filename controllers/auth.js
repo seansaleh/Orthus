@@ -37,8 +37,8 @@ passport.deserializeUser(function (user, done) {
 
 /** Middleware **/
 
-exports.isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) return next();
+exports.isAuthorized = function (req, res, next) {
+    if (req.isAuthenticated() && req.user && req.user.isAuthorized) return next();
     if (req.url != "/favicon.ico") {
         req.session.returnTo = req.path;
     }
