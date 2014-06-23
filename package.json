@@ -24,7 +24,8 @@
     "express-flash": "0.0.2",
     "errorhandler": "^1.0.0",
     "morgan": "^1.0.0",
-    "csurf": "^1.1.0"
+    "csurf": "^1.1.0",
+    "passport-persona": "~0.1.7"
   },
   "devDependencies": {
     "mocha": "^1.18.2"

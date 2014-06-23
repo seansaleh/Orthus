@@ -11,4 +11,16 @@
         debugger;
         $.post($(this).attr("action"), { identifier: $(this).attr("value")});
     });
+
+    $("button#persona-login").click(function(e) {
+        e.preventDefault();
+        navigator.id.get(function(assertion) {
+            if(assertion) {
+                $("form#persona-form>input").val(assertion);
+                $("form#persona-form").submit();
+            } else {
+                location.reload();
+            }
+        });
+    });
 });

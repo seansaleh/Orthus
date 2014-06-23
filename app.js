@@ -36,6 +36,10 @@ var server = http.createServer(app.handle.bind(app))
 app.post(config.baseURL + 'auth/openid', passport.authenticate('openid'));
 app.get(config.baseURL + 'auth/openid/callback', authController.getOpenIDCallback);
 
+app.post(config.baseURL + 'auth/browserid', passport.authenticate('persona', {
+  failureRedirect: config.baseURL + 'login'
+}), authController.postPersonaAuthenticate);
+
 app.get(config.baseURL + 'login', userController.getLogin);
 app.get(config.baseURL + 'logout', userController.getLogout);
 app.get(config.baseURL + 'signup', userController.getSignup);

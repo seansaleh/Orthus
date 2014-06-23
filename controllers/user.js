@@ -7,6 +7,10 @@ exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
     User.findByIdentifier(identifier, function (err, user) {
         if (err) return next(err);
         if (!user || !user.isAuthorized) {
+            if (user) {
+                console.log("user is:");
+                console.log(user);
+            }
             //Signup user to request access
             req.session.signUpIdentifier = identifier;
             req.session.signUpProfile = profile;
@@ -36,7 +40,6 @@ exports.getLogout = function (req, res, next) {
 };
 
 exports.getSignup = function (req, res, next) {
-    if (req.user) return next(new Error("Already requested account, cannot signup again"));
     if (!req.session.signUpProfile) {
         req.flash('errors', { msg: "Failed to sign up. Try linking with google again" });
         return res.redirect(config.baseURL + 'login');
