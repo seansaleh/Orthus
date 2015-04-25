@@ -1,19 +1,20 @@
 ﻿var passport = require('passport');
-var OpenIDStrategy = require('passport-openid').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var PersonaStrategy = require('passport-persona').Strategy;
-var config = require('../config/config');
+var config = require( '../config/config' );
+var secrets = require( '../config/secrets' );
 var User = require('../models/User');
 var userController = require('./user');
 
 /** Passport Config **/
-passport.use(new OpenIDStrategy({
-    returnURL: config.openIDReturnURL,
-    profile: true,
-    providerURL: 'https://www.google.com/accounts/o8/id'
-}, function (identifier, profile, done) {
-    //Note: After this passport calls into getOpenIDCallback's authenticate callback
-    if (!identifier) return done(null, false);
-    done(null, { identifier: identifier, profile: profile });
+passport.use(new GoogleStrategy({
+    callbackURL: config.googleCallbackUrl,
+    clientID: secrets.clientID,
+    clientSecret: secrets.clientSecret
+}, function (accessToken, refreshToken, profile, done) {
+    //Note: After this passport calls into getGoogleCallback's authenticate callback
+    if (!profile || !profile.emails || !profile.emails[0] || !profile.emails[0].value) return done(null, false);
+    done(null, { identifier: profile.id, profile: profile });
 }));
 
 passport.use(new PersonaStrategy({
@@ -67,20 +68,17 @@ exports.addAuthHeader = function (req, res, next) {
 };
 
 /** Routes **/
-exports.postOpenID = function (req, res, next) {
-    res.redirect('/');
-};
 
-exports.getOpenIDCallback = function (req, res, next) {
-    passport.authenticate('openid', function (err, identifierAndProfile, info) {
+exports.getGoogleCallback = function (req, res, next) {
+    passport.authenticate('google', function (err, identifierAndProfile, info) {
         //Note: based on current passport.use err will never be called
         if (err) return next(err);
         if (!identifierAndProfile) return res.redirect(config.baseURL + 'login');
 
-        userController.loginOrSignupOpenID(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
+        userController.loginOrSignup(identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next);
     })(req, res, next);
 };
 
 exports.postPersonaAuthenticate = function (req, res, next) {
-  userController.loginOrSignupOpenID(req.user.identifier, req.user.profile, req, res, next);
+  userController.loginOrSignup(req.user.identifier, req.user.profile, req, res, next);
 };

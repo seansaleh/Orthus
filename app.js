@@ -33,8 +33,11 @@ app.use(flash());
 var server = http.createServer(app.handle.bind(app))
 
 /** Routes **/
-app.post(config.baseURL + 'auth/openid', passport.authenticate('openid'));
-app.get(config.baseURL + 'auth/openid/callback', authController.getOpenIDCallback);
+app.post(config.baseURL + 'auth/google', passport.authenticate('google', { scope: ['email'] }), function ( req, res ) {
+    // The request will be redirected to Google for authentication, so this
+    // function will not be called.
+} );
+app.get(config.baseURL + 'auth/google/callback', authController.getGoogleCallback);
 
 app.post(config.baseURL + 'auth/browserid', passport.authenticate('persona', {
   failureRedirect: config.baseURL + 'login'
@@ -60,5 +63,5 @@ app.use(errorHandler());
 /** Finally start server **/
 server.listen(config.port);
 console.log("Orthus listening on port: " + config.port);
-console.log("Orthus's openID Callback route is: " + config.openIDReturnURL);
+console.log("Orthus's google Callback route is: " + config.googleCallbackUrl);
 console.log("Orthus is proxying: " + config.proxiedResource);

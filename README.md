@@ -22,7 +22,6 @@ TODOS / Features
 - [ ] Sessions stored long term, in same DB as accounts
 - [ ] Protect only specific URL's
 - [ ] Support multiple simultaneous "virtual hosts" / URLs
-- [ ] Autodetect openID callback by creating new providers dynamically
 - [ ] Clustering
 - [ ] Devise auth bypass system (basic auth? URL param?)
 - [ ] Benchmarks

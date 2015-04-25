@@ -3,7 +3,7 @@ var config = require('../config/config');
 var csrf = require('csurf');
 
 //TODO: Where should this logic live? All in auth controller? Or here?
-exports.loginOrSignupOpenID = function (identifier, profile, req, res, next) {
+exports.loginOrSignup = function (identifier, profile, req, res, next) {
     User.findByIdentifier(identifier, function (err, user) {
         if (err) return next(err);
         if (!user || !user.isAuthorized) {
