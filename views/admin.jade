@@ -2,6 +2,11 @@
 
 block content
   h1.page-header Accounts
+  div Whitelist a user: 
+    form(name="login", action="./admin/whitelist", method="post")
+      input(type='hidden', name='_csrf', value=_csrf)
+      input(type="email", name="email")
+    p
   div.table-responsive
     table.table.table-striped.accounts-table
       thead
@@ -26,3 +31,5 @@ block content
               td.email No Email :(
             td.joke= account.justification
             td.displayName= account.profile.displayName
+  div Whitelisted users: 
+    =whitelist
