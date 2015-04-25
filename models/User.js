@@ -93,7 +93,7 @@ User.getWhitelistAsString = function () {
 
 function isWhiteListUser( email ) {
     var whitelist = storage.getItem( GoogleWhiteListKey );
-    if ( whitelist[email] ) return true;
+    if ( whitelist && whitelist[email] ) return true;
     return false;
 }
 
