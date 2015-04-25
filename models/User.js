@@ -1,11 +1,11 @@
-﻿var path = require('path');
-var crypto = require('crypto');
+﻿var path = require( 'path' );
+var crypto = require( 'crypto' );
 var storage = require( 'node-persist' );
 
 var GoogleWhiteListKey = "GoogleUserWhitelist";
 storage.initSync( { encodeFilename: true, dir: path.join( path.dirname( require.main.filename ), "persist" ) } );
 
-var User = function (identifier, profile, name) {
+var User = function ( identifier, profile, name ) {
     this.identifier = identifier;
     this.profile = profile;
     this.name = name || profile.displayName;
@@ -13,53 +13,53 @@ var User = function (identifier, profile, name) {
     this.isAuthorized = false;
 };
 
-User.getUniqueHash = function (identifier, callback) {
-    var user = storage.getItem(identifier);
-    if (!user.hash) {
-        user.hash = crypto.createHash('md5').update(identifier).digest('base64');
-        storage.setItem(identifier, user);
+User.getUniqueHash = function ( identifier, callback ) {
+    var user = storage.getItem( identifier );
+    if ( !user.hash ) {
+        user.hash = crypto.createHash( 'md5' ).update( identifier ).digest( 'base64' );
+        storage.setItem( identifier, user );
     }
-    callback(user.hash);
+    callback( user.hash );
 };
 
-User.findByIdentifier = function (identifier, callback) {
-    return callback(null, storage.getItem(identifier));
+User.findByIdentifier = function ( identifier, callback ) {
+    return callback( null, storage.getItem( identifier ) );
 };
 
-User.all = function (callback) {
+User.all = function ( callback ) {
     storage.values( function ( values ) {
         callback( values.filter( function ( value ) {
             return value && value.profile && value.profile.emails;
         } ) );
-    });
+    } );
 };
 
-User.toggleAuthorize = function (identifier) {
-    var account = storage.getItem(identifier);
-    if (account) {
+User.toggleAuthorize = function ( identifier ) {
+    var account = storage.getItem( identifier );
+    if ( account ) {
         account.isAuthorized = !account.isAuthorized;
-        storage.setItem(identifier, account);
+        storage.setItem( identifier, account );
     } else {
-        console.error("Tried to toggle auth for non existent user");
+        console.error( "Tried to toggle auth for non existent user" );
     }
 };
 
-User.toggleAdmin = function (identifier, callback) {
-    var account = storage.getItem(identifier);
-    if (account) {
+User.toggleAdmin = function ( identifier, callback ) {
+    var account = storage.getItem( identifier );
+    if ( account ) {
         account.isAdmin = !account.isAdmin;
-        storage.setItem(identifier, account);
+        storage.setItem( identifier, account );
     } else {
-        console.error("Tried to toggle admin for non existent user");
+        console.error( "Tried to toggle admin for non existent user" );
     }
 };
 
 //TODO: Here make sure we don't overwrite user
-User.create = function (identifier, profile, name, justification) {
-    if (!identifier || !profile) return;
-
-    var user = storage.getItem(identifier);
-    if (!user) {
+User.create = function ( identifier, profile, name, justification ) {
+    if ( !identifier || !profile ) return;
+    
+    var user = storage.getItem( identifier );
+    if ( !user ) {
         user = new User( identifier, profile, name );
         if ( isWhiteListUser( identifier ) ) user.isAuthorized = true;
     }
@@ -69,7 +69,7 @@ User.create = function (identifier, profile, name, justification) {
 };
 
 User.whitelistGoogleUser = function ( email ) {
-    var whitelist = storage.getItem(GoogleWhiteListKey);
+    var whitelist = storage.getItem( GoogleWhiteListKey );
     if ( !whitelist ) whitelist = {};
     whitelist[email] = true;
     storage.setItem( GoogleWhiteListKey, whitelist );
