@@ -10,7 +10,7 @@ block content
           th Admin?
           th Name
           th Email
-          th Justification
+          th Joke
           th Display Name
       tbody
         for account in accounts
@@ -24,5 +24,5 @@ block content
               td.email= account.profile.emails[0].value
             else
               td.email No Email :(
-            td.justification= account.justification
+            td.joke= account.justification
             td.displayName= account.profile.displayName

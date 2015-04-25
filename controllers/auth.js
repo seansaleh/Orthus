@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
 }, function (accessToken, refreshToken, profile, done) {
     //Note: After this passport calls into getGoogleCallback's authenticate callback
     if (!profile || !profile.emails || !profile.emails[0] || !profile.emails[0].value) return done(null, false);
-    done(null, { identifier: profile.id, profile: profile });
+    done(null, { identifier: profile.emails[0].value, profile: profile });
 }));
 
 passport.use(new PersonaStrategy({
