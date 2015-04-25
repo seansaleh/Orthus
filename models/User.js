@@ -1,8 +1,9 @@
 ﻿var path = require('path');
 var crypto = require('crypto');
-var storage = require('node-persist');
+var storage = require( 'node-persist' );
 
-storage.initSync({encodeFilename: true, dir: path.join(path.dirname(require.main.filename), "persist")});
+var GoogleWhiteListKey = "GoogleUserWhitelist";
+storage.initSync( { encodeFilename: true, dir: path.join( path.dirname( require.main.filename ), "persist" ) } );
 
 var User = function (identifier, profile, name) {
     this.identifier = identifier;
@@ -26,7 +27,11 @@ User.findByIdentifier = function (identifier, callback) {
 };
 
 User.all = function (callback) {
-    storage.values(callback);
+    storage.values( function ( values ) {
+        callback( values.filter( function ( value ) {
+            return value && value.profile && value.profile.emails;
+        } ) );
+    });
 };
 
 User.toggleAuthorize = function (identifier) {
@@ -55,9 +60,41 @@ User.create = function (identifier, profile, name, justification) {
 
     var user = storage.getItem(identifier);
     if (!user) {
-        user = new User(identifier, profile, name);
+        user = new User( identifier, profile, name );
+        if ( isWhiteListUser( identifier ) ) user.isAuthorized = true;
     }
     user.justification = justification;
-    storage.setItem(identifier, user);
+    storage.setItem( identifier, user );
+    return user;
 };
+
+User.whitelistGoogleUser = function ( email ) {
+    var whitelist = storage.getItem(GoogleWhiteListKey);
+    if ( !whitelist ) whitelist = {};
+    whitelist[email] = true;
+    storage.setItem( GoogleWhiteListKey, whitelist );
+    storage.persistSync( );
+}
+
+User.getWhitelist = function () {
+    return storage.getItem( GoogleWhiteListKey );
+}
+
+User.getWhitelistAsString = function () {
+    var dict = storage.getItem( GoogleWhiteListKey );
+    var output = "";
+    for ( var key in dict ) {
+        if ( dict[key] ) {
+            output += key + ", ";
+        }
+    }
+    return output;
+}
+
+function isWhiteListUser( email ) {
+    var whitelist = storage.getItem( GoogleWhiteListKey );
+    if ( whitelist[email] ) return true;
+    return false;
+}
+
 module.exports = User;

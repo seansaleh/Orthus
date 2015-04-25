@@ -52,7 +52,9 @@ app.post(config.baseURL + 'signup', userController.postSignup);
 app.use(authController.isAuthorized);
 app.get(config.baseURL + 'admin', userController.admin, userController.getAdmin);
 app.post(config.baseURL + 'admin/toggleAuthorize', userController.admin, userController.postToggleAuthorize);
-app.post(config.baseURL + 'admin/toggleAdmin', userController.admin, userController.postToggleAdmin);
+app.post( config.baseURL + 'admin/toggleAdmin', userController.admin, userController.postToggleAdmin );
+app.post( config.baseURL + 'admin/whitelist', userController.admin, userController.postWhitelist );
+app.get( config.baseURL + 'admin/whitelist', userController.admin, userController.getWhitelist );
 
 server.on('upgrade', proxyController.proxyWebSocket);
 app.use(authController.addAuthHeader);

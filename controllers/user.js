@@ -26,7 +26,7 @@ exports.loginOrSignup = function (identifier, profile, req, res, next) {
 
 function signup(identifier, profile, name, justification) {
     if (!identifier || !profile) return;
-    User.create(identifier, profile, name, justification); 
+    return User.create(identifier, profile, name, justification); 
 }
 
 /** Routes **/
@@ -53,14 +53,20 @@ exports.postSignup = function (req, res, next) {
         return res.redirect(config.baseURL + 'login');
     }
 
-    signup(req.session.signUpIdentifier, req.session.signUpProfile, req.body.name, req.body.justification);
+    var user = signup( req.session.signUpIdentifier, req.session.signUpProfile, req.body.name, req.body.justification );
+    if ( user && user.isAuthorized ) {
+        return req.login( user, function ( err ) {
+            if ( err ) return next( err );
+            res.redirect( req.session.returnTo || '/' );
+        } );  
+    }
     req.flash('success', { msg: 'User Account requested. Will require admin approval' });
     res.redirect(config.baseURL + 'login');
 };
 
 exports.getAdmin = function (req, res, next) {
     User.all(function (accounts) {
-        res.render('admin', { user: req.user, accounts: accounts });
+        res.render('admin', { user: req.user, accounts: accounts, whitelist: User.getWhitelistAsString() });
     });
 };
 
@@ -73,6 +79,15 @@ exports.postToggleAdmin = function (req, res, next) {
     User.toggleAdmin(req.body.identifier);
     res.end();
 };
+
+exports.postWhitelist = function ( req, res, next ) {
+    User.whitelistGoogleUser( req.body.email );
+    return res.redirect( config.baseURL + 'admin' );
+}
+
+exports.getWhitelist = function ( req, res, next ) {
+    res.json( User.getWhitelist() );
+}
 
 exports.admin = function (req, res, next) {
     if (!req.user.isAdmin) {
