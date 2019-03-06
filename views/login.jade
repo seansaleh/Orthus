@@ -1,13 +1,10 @@
 ﻿extends layout
 
 block content
-  form#persona-form(style='display:none' method='post' action='auth/browserid')
-    input(type='text' name='assertion')
   div.well.well-centered
     form.form-centered(role=form action='auth/google', method='post')
       h2.form-centered-heading Please login
       button.btn.btn-lg.btn-primary.btn-block(type='submit') Login in with google
-      button.btn.btn-lg.btn-primary.btn-block#persona-login(type='submit') Login with persona
       br
       div.text-muted Don't have an account? 
         br 

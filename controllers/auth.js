@@ -1,6 +1,5 @@
 ﻿var passport = require( 'passport' );
-var GoogleStrategy = require( 'passport-google-oauth' ).OAuth2Strategy;
-var PersonaStrategy = require( 'passport-persona' ).Strategy;
+var GoogleStrategy = require( 'passport-google-oauth20' );
 var config = require( '../config/config' );
 var secrets = require( '../config/secrets' );
 var User = require( '../models/User' );
@@ -10,22 +9,12 @@ var userController = require( './user' );
 passport.use( new GoogleStrategy( {
     callbackURL: config.googleCallbackUrl,
     clientID: secrets.clientID,
-    clientSecret: secrets.clientSecret
+    clientSecret: secrets.clientSecret,
+    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
 }, function ( accessToken, refreshToken, profile, done ) {
     //Note: After this passport calls into getGoogleCallback's authenticate callback
     if ( !profile || !profile.emails || !profile.emails[0] || !profile.emails[0].value ) return done( null, false );
     done( null, { identifier: profile.emails[0].value, profile: profile } );
-} ) );
-
-passport.use( new PersonaStrategy( {
-    audience: config.personaAudience
-},
-function ( email, done ) {
-    if ( !email ) return done( null, false );
-    var emails = [
-        { value: email }
-    ];
-    done( null, { identifier: "persona:" + email, profile: { emails: emails } } );
 } ) );
 
 passport.serializeUser( function ( user, done ) {
@@ -77,8 +66,4 @@ exports.getGoogleCallback = function ( req, res, next ) {
         
         userController.loginOrSignup( identifierAndProfile.identifier, identifierAndProfile.profile, req, res, next );
     } )( req, res, next );
-};
-
-exports.postPersonaAuthenticate = function ( req, res, next ) {
-    userController.loginOrSignup( req.user.identifier, req.user.profile, req, res, next );
 };

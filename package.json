@@ -1,6 +1,6 @@
 {
   "name": "Orthus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Authentication for a reverse proxy",
   "main": "app.js",
   "author": {
@@ -24,7 +24,7 @@
     "morgan": "^1.0.0",
     "node-persist": "seansaleh/node-persist",
     "passport": "^0.2.1",
-    "passport-google-oauth": "^0.2.0",
+    "passport-google-oauth20": "^1.0.0",
     "passport-persona": "~0.1.7"
   },
   "devDependencies": {

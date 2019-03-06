@@ -39,10 +39,6 @@ app.post( config.baseURL + 'auth/google', passport.authenticate( 'google', { sco
 } );
 app.get( config.baseURL + 'auth/google/callback', authController.getGoogleCallback );
 
-app.post( config.baseURL + 'auth/browserid', passport.authenticate( 'persona', {
-    failureRedirect: config.baseURL + 'login'
-} ), authController.postPersonaAuthenticate );
-
 app.get( config.baseURL + 'login', userController.getLogin );
 app.get( config.baseURL + 'logout', userController.getLogout );
 app.get( config.baseURL + 'signup', userController.getSignup );
