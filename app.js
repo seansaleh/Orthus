@@ -25,7 +25,7 @@ app.set( 'view engine', 'jade' );
 app.use( config.baseURL + 'static', express.static( __dirname + '/public' ) );
 app.use( bodyParser.urlencoded( ) );
 app.use( cookieParser( ) )
-app.use( session( { key: 'orthus', secret: secrets.sessionSecret } ) );
+app.use( session( { key: 'orthus', secret: secrets.sessionSecret, cookie: { maxAge: 1000 * 60 * 60 *24 * 365 } } ) );
 app.use( passport.initialize( ) );
 app.use( passport.session( ) );
 app.use( flash( ) );
